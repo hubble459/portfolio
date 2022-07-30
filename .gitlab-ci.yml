@@ -27,7 +27,7 @@ deploy:dev:
         - npm install
         - npm run build
         - ssh-add <(echo "$STAGING_PRIVATE_KEY")
-        - ssh -p22 hentai@143.178.215.190 "rm -rf nginxproxymanager/data/websites/quentincorreia.nl/*"
+        - ssh -p22 hentai@143.178.215.190 "setopt +o nomatch && rm -rf nginxproxymanager/data/websites/quentincorreia.nl/*"
         - scp -P22 -r dist/* hentai@143.178.215.190:nginxproxymanager/data/websites/quentincorreia.nl
     artifacts:
         paths:
