@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "@antfu"
+  ],
+  "rules": {
+    "semi": "off",
+    "@typescript-eslint/semi": [2, "always"],
+    "@typescript-eslint/no-var-requires": "off",
+    "vue/component-tags-order": ["error", {
+      "order": [ "template", "script", "style" ]
+    }],
+    "vue/script-indent": ["error", 4, { "baseIndent": 1 }],
+    "brace-style": "off",
+    "@typescript-eslint/brace-style": ["error", "1tbs"],
+    "curly": ["error", "all"],
+    "vue/component-name-in-template-casing": ["error", "PascalCase", {
+      "registeredComponentsOnly": true,
+      "ignores": []
+    }]
+  },
+  "overrides": [
+    {
+      "files": ["*.vue"],
+      "rules": {
+        "@typescript-eslint/indent": "off"
+      }
+    }
+  ]
+}

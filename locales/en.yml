@@ -1,0 +1,14 @@
+home:
+  frameworks: Frameworks
+  intro:
+    in-enschede: in Enschede
+    student: student at
+  languages: Programming Languages
+  self-made: i made this uwu
+  self-made-as-well: made this as well
+nav:
+  about: About
+  home: Home
+  projects: Projects
+  settings: Settings
+not-found: Not found
