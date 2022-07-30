@@ -1,0 +1,34 @@
+image: node:lts-slim
+
+cache:
+    paths:
+        - node_modules/
+
+eslint:
+    stage: test
+    script:
+        - npm install
+        - npm run lint
+
+# vitest:
+#     stage: test
+#     script:
+#         - npm run test
+
+deploy:dev:
+    stage: deploy
+    only:
+        - main
+    script:
+        - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+        - mkdir -p ~/.ssh
+        - eval $(ssh-agent -s)
+        - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+        - npm install
+        - npm run build:dev
+        - ssh-add <(echo "$STAGING_PRIVATE_KEY")
+        - ssh -p22 hentai@143.178.215.190 "rm -rf nginxproxymanager/data/websites/quentincorreia.nl/*"
+        - scp -P22 -r dist/* hentai@143.178.215.190:nginxproxymanager/data/websites/quentincorreia.nl
+    artifacts:
+        paths:
+            - dist
