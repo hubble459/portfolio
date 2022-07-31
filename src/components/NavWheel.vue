@@ -49,25 +49,6 @@
             bg-primary-600 shadow-inner;
         transform: translateX(50%);
 
-        @media only screen and (min-width: 640px) {
-
-        }
-
-        &.hovering {
-            @apply bg-primary-600
-            bg-primary-500 shadow-inner;
-            transform: translateX(50%) scale(4);
-
-            > svg {
-                @apply opacity-0;
-                transform: scale(1);
-            }
-
-            > div {
-                @apply block;
-            }
-        }
-
         > svg {
             @apply duration-300 transition-all;
             transform: scale(2);
@@ -76,20 +57,6 @@
 
         > div {
             @apply hidden;
-
-            a {
-                &.router-link-active svg {
-                    @apply text-gray-200 opacity-50 cursor-auto;
-                }
-
-                &:not(.router-link-active):hover svg {
-                    @apply text-gray-400;
-                }
-
-                svg {
-                    @apply w-3 h-auto absolute transform;
-                }
-            }
 
             a:nth-of-type(1) svg {
                 @apply top-1 -translate-x-full;
@@ -105,6 +72,35 @@
 
             a:nth-of-type(4) svg {
                 @apply bottom-1 -translate-x-full;
+            }
+
+            a {
+                &.router-link-active svg {
+                    @apply text-gray-200 opacity-50 cursor-auto;
+                }
+
+                &:not(.router-link-active):hover svg {
+                    @apply text-gray-400;
+                }
+
+                svg {
+                    @apply w-3 h-auto absolute transform;
+                }
+            }
+        }
+
+        &.hovering {
+            @apply bg-primary-600
+                bg-primary-500 shadow-inner;
+            transform: translateX(50%) scale(4);
+
+            > svg {
+                @apply opacity-0;
+                transform: scale(1);
+            }
+
+            > div {
+                @apply block;
             }
         }
     }

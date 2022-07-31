@@ -1,0 +1,17 @@
+{
+    "extends": ["stylelint-config-recommended-vue/scss"],
+    "rules": {
+        "indentation": 4,
+        "function-no-unknown": [true, { "ignoreFunctions": ["theme"] }],
+        "no-descending-specificity": null,
+        "no-empty-source": null
+    },
+    "overrides": [
+        {
+            "files": ["*.vue", "**/*.vue"],
+            "rules": {
+                "indentation": [4, { "baseIndentLevel": 1 }]
+            }
+        }
+    ]
+}

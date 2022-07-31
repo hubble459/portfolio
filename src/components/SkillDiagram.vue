@@ -70,20 +70,20 @@
 </script>
 
 <style lang="postcss">
-svg.diagram {
-    @apply rounded bg-light-500 dark:bg-background-800;
+    svg.diagram {
+        @apply rounded bg-light-500 dark:bg-background-800;
 
-    foreignObject {
-        a {
-            @apply bg-light-800 hover:bg-light-blue-200
+        foreignObject {
+            a {
+                @apply bg-light-800 hover:bg-light-blue-200
                     dark:bg-background-700 dark:hover:bg-background-600 rounded-t;
-            display: block;
+                display: block;
+            }
+        }
+
+        text {
+            pointer-events: none;
+            fill: theme('colors.primary.500');
         }
     }
-
-    text {
-        pointer-events: none;
-        fill: theme('colors.primary.500');
-    }
-}
 </style>
