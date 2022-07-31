@@ -1,6 +1,6 @@
 <template>
     <div class="absolute right-0 top-0 bottom-0 left-0 overflow-hidden pointer-events-none ">
-        <nav class="nav-wheel">
+        <nav ref="nav" class="nav-wheel" @mouseenter="enter" @mouseleave="leave" @click="enter">
             <fontisto-nav-icon-a />
             <div>
                 <RouterLink to="/" :title="t('nav.home')">
@@ -22,6 +22,17 @@
 
 <script setup lang="ts">
     const { t } = useI18n();
+    const nav = ref<HTMLElement>(null as any);
+
+    onClickOutside(nav, leave);
+
+    function enter() {
+        nav.value.classList.add('hovering');
+    }
+
+    function leave() {
+        nav.value.classList.remove('hovering');
+    }
 </script>
 
 <style scoped lang="postcss">
@@ -36,7 +47,11 @@
             bg-primary-600 shadow-inner;
         transform: translateX(50%);
 
-        &:hover {
+        @media only screen and (min-width: 640px) {
+
+        }
+
+        &.hovering {
             @apply bg-primary-600
             bg-primary-500 shadow-inner;
             transform: translateX(50%) scale(4);
@@ -47,18 +62,18 @@
             }
 
             > div {
-                @apply opacity-100;
+                @apply block;
             }
         }
 
         > svg {
-            @apply transition-all duration-300;
+            @apply duration-300 transition-all;
             transform: scale(2);
             opacity: 1;
         }
 
         > div {
-            @apply opacity-0 transition-all duration-1000 ease-out;
+            @apply transition-all duration-1000 ease-out hidden;
 
             a {
                 &.router-link-active svg {
