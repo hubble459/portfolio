@@ -73,20 +73,17 @@
 svg.diagram {
     @apply rounded bg-light-500 dark:bg-background-800;
 
-    /* g { */
-
-        foreignObject {
-            a {
-                @apply bg-light-800 hover:bg-light-blue-200
-                       dark:bg-background-700 dark:hover:bg-background-600 rounded-t;
-                display: block;
-            }
+    foreignObject {
+        a {
+            @apply bg-light-800 hover:bg-light-blue-200
+                    dark:bg-background-700 dark:hover:bg-background-600 rounded-t;
+            display: block;
         }
+    }
 
-        text {
-            pointer-events: none;
-            fill: theme('colors.primary.500');
-        }
-    /* } */
+    text {
+        pointer-events: none;
+        fill: theme('colors.primary.500');
+    }
 }
 </style>

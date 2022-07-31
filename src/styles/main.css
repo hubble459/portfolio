@@ -14,7 +14,7 @@ body,
 }
 
 svg {
-  @apply transition-all text-gray-700 dark:text-gray-200;
+  @apply transition-all text-gray-200;
 }
 
 html.dark {

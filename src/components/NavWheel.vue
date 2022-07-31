@@ -73,15 +73,15 @@
         }
 
         > div {
-            @apply transition-all duration-1000 ease-out hidden;
+            @apply hidden;
 
             a {
                 &.router-link-active svg {
-                    @apply text-gray-600 dark:text-gray-200 opacity-50 cursor-auto;
+                    @apply text-gray-200 opacity-50 cursor-auto;
                 }
 
                 &:not(.router-link-active):hover svg {
-                    @apply text-gray-800 dark:text-gray-400;
+                    @apply text-gray-400;
                 }
 
                 svg {

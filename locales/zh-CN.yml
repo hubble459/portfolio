@@ -16,4 +16,8 @@ nav:
 not-found: 未找到
 settings:
   colour-mode: 颜色模式
+  colour-mode-dark: 黑暗的
+  colour-mode-light: 光
   language: 语
+  updated: 于 {datetime} 更新
+  version: 版本

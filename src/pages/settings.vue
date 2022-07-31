@@ -4,10 +4,10 @@
     <h2>{{ t('settings.colour-mode') }}</h2>
     <div class="buttons">
         <button type="button" :class="{ active: !isDark }" @click="isDark = false">
-            Light Mode
+            {{ t('settings.colour-mode-light') }}
         </button>
         <button type="button" :class="{ active: isDark }" @click="isDark = true">
-            Dark Mode
+            {{ t('settings.colour-mode-dark') }}
         </button>
     </div>
     <hr>
@@ -17,12 +17,20 @@
             {{ aLocale }}
         </button>
     </div>
+    <hr>
+    <h2>{{ t('settings.version') }}</h2>
+    <small>{{ VERSION }} (<a href="https://gitlab.com/meep334/portfolio/" target="_blank" rel="noopener noreferrer">gitlab</a>)</small>
+    <br>
+    <small>{{ t('settings.updated', { datetime: d(BUILD_TIMESTAMP, 'longTime') }) }}</small>
 </template>
 
 <script setup lang="ts">
     import { isDark } from '~/logic';
 
-    const { t, availableLocales, locale } = useI18n();
+    const VERSION = import.meta.env.VERSION;
+    const BUILD_TIMESTAMP = import.meta.env.BUILD_TIMESTAMP;
+
+    const { t, d, availableLocales, locale } = useI18n();
 
     function changeLocale(aLocale: string) {
         locale.value = aLocale;

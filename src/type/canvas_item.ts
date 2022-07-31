@@ -1,4 +1,4 @@
 export default interface CanvasItem {
-  name: string
-  size: number
+    name: string
+    size: number
 }
