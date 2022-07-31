@@ -10,6 +10,7 @@
       "order": [ "template", "script", "style" ]
     }],
     "vue/script-indent": ["error", 4, { "baseIndent": 1 }],
+    "vue/html-indent": ["error", 4, { "baseIndent": 1 }],
     "brace-style": "off",
     "@typescript-eslint/brace-style": ["error", "1tbs"],
     "curly": ["error", "all"],

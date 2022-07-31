@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="canvas" :width="center * 2" :height="center * 2" background="red" class="!bg-transparent rounded cursor-move" @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onMouseDrag" />
+    <canvas ref="canvas" :width="center * 2" :height="center * 2" background="red" class="!bg-transparent rounded cursor-move" @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onMouseDrag" />
 </template>
 
 <script setup lang="ts">
@@ -18,28 +18,27 @@
     const speedDecrease = 0.995;
     const full = Math.PI * 2;
     const balls: Ball[] = [];
-    const center = ref(document.body.clientWidth / 2.3);
-    const minSize = ref(document.body.clientWidth / 50);
+    const minSize = document.body.clientWidth / 50;
+    let center = document.body.clientWidth / 2.3;
     let lastDragRadians = 0;
     let dragSpeed = 0.005;
     let dragging: undefined | Ball;
 
     window.addEventListener('resize', () => {
-        center.value = document.body.clientWidth / 2.3;
-        minSize.value = document.body.clientWidth / 50;
+        center = document.body.clientWidth / 2.3;
         resetBalls();
     });
 
     const canvas = ref<HTMLCanvasElement>(null as any);
 
     function calcXY(rotation: number, radius: number) {
-        return { x: radius * Math.sin(rotation) + center.value, y: radius * Math.cos(rotation) + center.value };
+        return { x: radius * Math.sin(rotation) + center, y: radius * Math.cos(rotation) + center };
     }
 
     function intersects(ball: Ball, x1: number, y1: number, r1: number) {
         const { x: x2, y: y2 } = calcXY(ball.rotation, ball.radius);
         const dist = Math.hypot(x2 - x1, y2 - y1);
-        return dist <= r1 + ball.item.size * minSize.value;
+        return dist <= r1 + ball.item.size * minSize;
     }
 
     function startDrag(event: MouseEvent) {
@@ -60,7 +59,7 @@
     function onMouseDrag(event: MouseEvent) {
         if (dragging) {
             const { offsetX: x, offsetY: y } = event;
-            let radians = Math.atan2(x - center.value, y - center.value);
+            let radians = Math.atan2(x - center, y - center);
             if (radians < 0) {
                 radians = Math.PI - Math.abs(radians) + Math.PI;
             }
@@ -78,11 +77,13 @@
         balls.length = 0;
         balls.push(...props.items.map((item) => {
             const randomVelocity = Math.floor(Math.random() * 100) / 1000;
+            const ballRadius = minSize * item.size;
+            const diameter = ballRadius * 2;
             return {
                 item,
                 rotation: Math.floor(Math.random() * full),
                 velocity: Math.random() < 0.5 ? -randomVelocity : randomVelocity,
-                radius: Math.floor(Math.random() * center.value / 1.5) + minSize.value * 6,
+                radius: Math.floor(Math.random() * (center - diameter * 2)) + diameter,
             };
         }));
     }
@@ -113,22 +114,26 @@
                     }
 
                     const { x, y } = calcXY(ball.rotation, ball.radius);
-                    const size = ball.item.size;
+                    const ballSize = ball.item.size * minSize;
 
                     ctx.moveTo(x, y);
-                    ctx.lineTo(center.value, center.value);
+                    ctx.lineTo(center, center);
                     ctx.stroke();
                     ctx.beginPath();
                     ctx.fillStyle = '#fff';
-                    ctx.arc(x, y, minSize.value * size, 0, 2 * Math.PI);
+                    ctx.arc(x, y, ballSize, 0, 2 * Math.PI);
                     ctx.fill();
 
                     ctx.fillStyle = '#B00B69';
-                    ctx.font = `bold ${11 + size}px monospace`;
-                    const textSize = ctx.measureText(ball.item.name);
+                    let textSize: TextMetrics;
+                    let fontSize = 30;
+                    do {
+                        ctx.font = `bold ${fontSize-- + ball.item.size}px monospace`;
+                        textSize = ctx.measureText(ball.item.name);
+                    } while (textSize.width * 1.2 > ballSize * 2);
                     ctx.fillText(ball.item.name, x - textSize.width / 2, y + 4);
 
-                    const b = balls.find(b => b !== ball && intersects(b, x, y, ball.item.size * minSize.value));
+                    const b = balls.find(b => b !== ball && intersects(b, x, y, ballSize));
 
                     if (b) {
                         const diff = ball.rotation - b.rotation;
@@ -147,9 +152,9 @@
                     }
                 }
 
-                // center.value
+                // center
                 ctx.beginPath();
-                ctx.arc(center.value, center.value, 20, 0, 2 * Math.PI);
+                ctx.arc(center, center, 20, 0, 2 * Math.PI);
                 ctx.fill();
                 requestAnimationFrame(onFrame);
             }
