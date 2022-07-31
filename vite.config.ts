@@ -16,7 +16,7 @@ import LinkAttributes from 'markdown-it-link-attributes';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left';
-const VERSION = '1.0.4';
+const VERSION = '1.0.5';
 
 export default defineConfig({
     define: {
