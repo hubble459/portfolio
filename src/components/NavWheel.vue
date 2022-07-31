@@ -1,6 +1,6 @@
 <template>
     <div class="absolute right-0 top-0 bottom-0 left-0 overflow-hidden pointer-events-none ">
-        <nav ref="nav" class="nav-wheel" @mouseenter="enter" @mouseleave="leave" @click="enter">
+        <nav ref="nav" class="nav-wheel" @mouseenter="enter" @mouseleave="leave" @click.stop="enter">
             <fontisto-nav-icon-a />
             <div>
                 <RouterLink to="/" :title="t('nav.home')">
@@ -27,7 +27,9 @@
     onClickOutside(nav, leave);
 
     function enter() {
-        nav.value.classList.add('hovering');
+        setTimeout(() => {
+            nav.value.classList.add('hovering');
+        }, 10);
     }
 
     function leave() {
