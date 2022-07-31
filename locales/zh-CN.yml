@@ -1,3 +1,19 @@
+global:
+  back: 后退
 home:
   frameworks: 构架
-title: OwO
+  intro:
+    in-enschede: （恩斯赫德）
+    student: 学生在
+  languages: 编程语言
+  self-made: 我做了这个 uwu
+  self-made-as-well: 也做了这个
+nav:
+  about: 关于
+  home: 家
+  projects: 项目
+  settings: 设置
+not-found: 未找到
+settings:
+  colour-mode: 颜色模式
+  language: 语
