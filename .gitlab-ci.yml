@@ -9,6 +9,8 @@ eslint:
     script:
         - npm install
         - npm run lint
+    only:
+        - merge_requests
 
 # vitest:
 #     stage: test
