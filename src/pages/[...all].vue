@@ -13,7 +13,7 @@
                 class="btn m-3 text-sm mt-8"
                 @click="router.back()"
             >
-                {{ t('button.back') }}
+                {{ t('global.back') }}
             </button>
         </div>
     </main>

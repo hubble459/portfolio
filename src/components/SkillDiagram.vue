@@ -71,15 +71,14 @@
 
 <style lang="postcss">
 svg.diagram {
-    @apply rounded;
-    background-color: theme('colors.background.800');
+    @apply rounded bg-light-500 dark:bg-background-800;
 
     /* g { */
 
         foreignObject {
             a {
-                @apply hover:bg-background-600;
-                background-color: theme('colors.background.700');
+                @apply bg-light-800 hover:bg-light-blue-200
+                       dark:bg-background-700 dark:hover:bg-background-600 rounded-t;
                 display: block;
             }
         }

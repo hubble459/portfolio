@@ -43,6 +43,7 @@
 
     function startDrag(event: MouseEvent) {
         const { offsetX: x, offsetY: y } = event;
+        lastDragRadians = 0;
         dragging = balls.find(b => intersects(b, x, y, 2));
         if (dragging) {
             dragging.velocity = 0;
@@ -123,6 +124,7 @@
                     ctx.fillStyle = '#fff';
                     ctx.arc(x, y, ballSize, 0, 2 * Math.PI);
                     ctx.fill();
+                    ctx.stroke();
 
                     ctx.fillStyle = '#B00B69';
                     let textSize: TextMetrics;
@@ -135,7 +137,7 @@
 
                     const b = balls.find(b => b !== ball && intersects(b, x, y, ballSize));
 
-                    if (b) {
+                    if (b && b !== dragging && ball !== dragging) {
                         const diff = ball.rotation - b.rotation;
                         const right = diff < 0 || diff > 4;
                         const attack = Math.abs(ball.velocity) > Math.abs(b.velocity);
