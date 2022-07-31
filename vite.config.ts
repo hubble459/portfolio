@@ -16,11 +16,12 @@ import LinkAttributes from 'markdown-it-link-attributes';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left';
+const VERSION = '1.0.4';
 
 export default defineConfig({
     define: {
         'import.meta.env.BUILD_TIMESTAMP': JSON.stringify(Date.now()),
-        'import.meta.env.VERSION': JSON.stringify('1.0.1'),
+        'import.meta.env.VERSION': JSON.stringify(VERSION),
     },
     resolve: {
         alias: {
