@@ -1,5 +1,15 @@
 <template>
-    <canvas ref="canvas" :width="center * 2" :height="center * 2" background="red" class="!bg-transparent rounded cursor-move" @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onMouseDrag" />
+    <div class="relative my-8">
+        <canvas ref="canvas" :width="center * 2" :height="center * 2" background="red" class="!bg-transparent rounded cursor-move" @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onMouseDrag" />
+        <form class="absolute top-0 left-0 grid grid-cols-2 w-max place-items-start gap-1 text-left" @submit.prevent>
+            <label>Min Speed:</label>
+            <input v-model="minSpeed" max="500" class="w-15" step="1" type="number">
+            <label>Speed Decrease:</label>
+            <input v-model="speedDecrease" max="1" class="w-15" step="0.001" type="number">
+            <label>Collision:</label>
+            <input v-model="collision" type="checkbox">
+        </form>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -15,13 +25,15 @@
     const props = defineProps<{
         items: CanvasItem[]
     }>();
-    const speedDecrease = 0.995;
+    const speedDecrease = ref(0.99);
     const full = Math.PI * 2;
     const balls: Ball[] = [];
+    const minSpeed = ref(1);
+    const collision = ref(true);
     const minSize = document.body.clientWidth / 50;
     let center = document.body.clientWidth / 2.3;
     let lastDragRadians = 0;
-    let dragSpeed = 0.005;
+    let dragSpeed = (minSpeed.value / 1000);
     let dragging: undefined | Ball;
 
     window.addEventListener('resize', () => {
@@ -52,7 +64,7 @@
 
     function stopDrag() {
         if (dragging) {
-            dragging.velocity = dragSpeed < 0 ? Math.min(dragSpeed, -0.005) : Math.max(dragSpeed, 0.005);
+            dragging.velocity = dragSpeed < 0 ? Math.min(dragSpeed, -(minSpeed.value / 1000)) : Math.max(dragSpeed, (minSpeed.value / 1000));
         }
         dragging = undefined;
     }
@@ -111,7 +123,7 @@
                         if (ball.rotation < 0) {
                             ball.rotation = full - ball.rotation;
                         }
-                        ball.velocity = ball.velocity < 0 ? Math.min(ball.velocity * speedDecrease, -0.005) : Math.max(ball.velocity * speedDecrease, 0.005);
+                        ball.velocity = ball.velocity < 0 ? Math.min(ball.velocity * speedDecrease.value, -(minSpeed.value / 1000)) : Math.max(ball.velocity * speedDecrease.value, (minSpeed.value / 1000));
                     }
 
                     const { x, y } = calcXY(ball.rotation, ball.radius);
@@ -135,21 +147,23 @@
                     } while (textSize.width * 1.2 > ballSize * 2);
                     ctx.fillText(ball.item.name, x - textSize.width / 2, y + 4);
 
-                    const b = balls.find(b => b !== ball && intersects(b, x, y, ballSize));
+                    if (collision.value) {
+                        const b = balls.find(b => b !== ball && intersects(b, x, y, ballSize));
 
-                    if (b && b !== dragging && ball !== dragging) {
-                        const diff = ball.rotation - b.rotation;
-                        const right = diff < 0 || diff > 4;
-                        const attack = Math.abs(ball.velocity) > Math.abs(b.velocity);
+                        if (b && b !== dragging && ball !== dragging) {
+                            const diff = ball.rotation - b.rotation;
+                            const right = diff < 0 || diff > 4;
+                            const attack = Math.abs(ball.velocity) > Math.abs(b.velocity);
 
-                        if (right) {
-                            const vel = Math.abs(ball.velocity);
-                            ball.velocity = attack ? -0.01 : -b.velocity;
-                            b.velocity = attack ? 0.01 : vel;
-                        } else {
-                            const vel = -ball.velocity;
-                            ball.velocity = attack ? 0.01 : Math.abs(b.velocity);
-                            b.velocity = attack ? -0.01 : vel;
+                            if (right) {
+                                const vel = Math.abs(ball.velocity);
+                                ball.velocity = attack ? -0.01 : -b.velocity;
+                                b.velocity = attack ? 0.01 : vel;
+                            } else {
+                                const vel = -ball.velocity;
+                                ball.velocity = attack ? 0.01 : Math.abs(b.velocity);
+                                b.velocity = attack ? -0.01 : vel;
+                            }
                         }
                     }
                 }

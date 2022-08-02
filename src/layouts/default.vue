@@ -1,6 +1,6 @@
 <template>
     <main class="text-center h-screen q-scroll">
-        <NavWheel />
         <RouterView />
+        <NavWheel />
     </main>
 </template>

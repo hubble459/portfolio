@@ -11,7 +11,7 @@
     "source.fixAll": true
   },
   "files.associations": {
-    "*.css": "postcss",
+    "*.css": "scss",
   },
   "files.exclude": {
     "**/.git": true,

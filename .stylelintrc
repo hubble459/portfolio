@@ -4,13 +4,19 @@
         "indentation": 4,
         "function-no-unknown": [true, { "ignoreFunctions": ["theme"] }],
         "no-descending-specificity": null,
-        "no-empty-source": null
+        "no-empty-source": null,
+        "declaration-block-trailing-semicolon": "always",
+        "declaration-block-single-line-max-declarations": 1,
+        "declaration-block-semicolon-newline-after": "always-multi-line",
+        "block-closing-brace-newline-after": "always",
+        "block-closing-brace-newline-before": "always"
     },
     "overrides": [
         {
             "files": ["*.vue", "**/*.vue"],
             "rules": {
-                "indentation": [4, { "baseIndentLevel": 1 }]
+                "indentation": [4, { "baseIndentLevel": 1 }],
+                "scss/operator-no-unspaced": null
             }
         }
     ]

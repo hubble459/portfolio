@@ -23,6 +23,11 @@ export const install: UserModule = ({ app }) => {
             weekday: 'long',
             year: 'numeric',
         },
+        date: {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+        },
         longTime: {
             month: 'long',
             day: 'numeric',
