@@ -7,12 +7,9 @@ import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Components from 'unplugin-vue-components/vite';
 import AutoImport from 'unplugin-auto-import/vite';
-import Markdown from 'vite-plugin-md';
 import WindiCSS from 'vite-plugin-windicss';
 import VueI18n from '@intlify/vite-plugin-vue-i18n';
 import Inspect from 'vite-plugin-inspect';
-import Prism from 'markdown-it-prism';
-import LinkAttributes from 'markdown-it-link-attributes';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left';
@@ -84,23 +81,6 @@ export default defineConfig({
         // https://github.com/antfu/vite-plugin-windicss
         WindiCSS({
             safelist: markdownWrapperClasses,
-        }),
-
-        // https://github.com/antfu/vite-plugin-md
-        Markdown({
-            wrapperClasses: markdownWrapperClasses,
-            headEnabled: true,
-            markdownItSetup(md: any) {
-                // https://prismjs.com/
-                md.use(Prism);
-                md.use(LinkAttributes, {
-                    pattern: /^https?:\/\//,
-                    attrs: {
-                        target: '_blank',
-                        rel: 'noopener',
-                    },
-                });
-            },
         }),
 
         // https://github.com/antfu/vite-plugin-pwa

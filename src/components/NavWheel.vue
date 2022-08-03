@@ -6,7 +6,7 @@
                 <RouterLink to="/" :title="t('nav.home')">
                     <ci:home-outline />
                 </RouterLink>
-                <RouterLink to="/project" :title="t('nav.projects')">
+                <RouterLink to="/projects" :title="t('nav.projects')">
                     <ci:window-code-block />
                 </RouterLink>
                 <RouterLink to="/about" :title="t('nav.about')">
