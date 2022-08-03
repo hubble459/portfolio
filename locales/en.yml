@@ -16,4 +16,8 @@ nav:
 not-found: Not found
 settings:
   colour-mode: Colour Mode
+  colour-mode-dark: Dark
+  colour-mode-light: Light
   language: Language
+  updated: Updated on {datetime}
+  version: Version

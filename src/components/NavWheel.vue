@@ -1,6 +1,6 @@
 <template>
     <div class="absolute right-0 top-0 bottom-0 left-0 overflow-hidden pointer-events-none ">
-        <nav ref="nav" class="nav-wheel" @mouseenter="enter" @mouseleave="leave" @click="enter">
+        <nav ref="nav" class="nav-wheel" @mouseenter="enter(false)" @mouseleave="leave" @click.stop="enter(true)">
             <fontisto-nav-icon-a />
             <div>
                 <RouterLink to="/" :title="t('nav.home')">
@@ -26,8 +26,14 @@
 
     onClickOutside(nav, leave);
 
-    function enter() {
-        nav.value.classList.add('hovering');
+    function enter(click = false) {
+        if (click) {
+            setTimeout(() => {
+                nav.value.classList.add('hovering');
+            }, 10);
+        } else {
+            nav.value.classList.add('hovering');
+        }
     }
 
     function leave() {
@@ -37,23 +43,19 @@
 
 <style scoped lang="postcss">
     .nav-wheel {
-        @apply absolute right-0 top-0 bottom-0 my-auto overflow-hidden
+        @apply absolute right-0 top-0 bottom-0 my-auto overflow-hidden z-10
             pointer-events-auto
             grid content-center justify-center
             rounded-1
             transition-all duration-700
             w-20 h-20
             bg-primary-500
-            bg-primary-600 shadow-inner;
-        transform: translateX(50%);
-
-        @media only screen and (min-width: 640px) {
-
-        }
+            bg-primary-600 shadow-inner
+            transform translate-x-1/2;
 
         &.hovering {
             @apply bg-primary-600
-            bg-primary-500 shadow-inner;
+                bg-primary-500 shadow-inner;
             transform: translateX(50%) scale(4);
 
             > svg {
@@ -73,15 +75,15 @@
         }
 
         > div {
-            @apply transition-all duration-1000 ease-out hidden;
+            @apply hidden;
 
             a {
                 &.router-link-active svg {
-                    @apply text-gray-600 dark:text-gray-200 opacity-50 cursor-auto;
+                    @apply text-gray-200 opacity-50 cursor-auto;
                 }
 
                 &:not(.router-link-active):hover svg {
-                    @apply text-gray-800 dark:text-gray-400;
+                    @apply text-gray-400;
                 }
 
                 svg {

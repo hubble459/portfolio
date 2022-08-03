@@ -1,0 +1,23 @@
+global:
+  back: 戻る
+home:
+  frameworks: フレームワーク
+  intro:
+    in-enschede: エンスヘーデの
+    student: の学生
+  languages: プログラミング言語
+  self-made: 私はこれを作った
+  self-made-as-well: これも作った
+nav:
+  about: 約
+  home: 家
+  projects: プロジェクト
+  settings: 設定
+not-found: 見つかりません
+settings:
+  colour-mode: カラーモード
+  colour-mode-dark: 暗い
+  colour-mode-light: 光
+  language: 言語
+  updated: '{datetime}に更新'
+  version: バージョン

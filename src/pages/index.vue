@@ -9,7 +9,7 @@
     <hr>
     <div class="flex flex-col">
         <h2>{{ t('home.languages') }}</h2>
-        <sub>{{ t('home.self-made') }}</sub>
+        <!-- <sub>{{ t('home.self-made') }}</sub> -->
         <CanvasBalls class="mx-auto" :items="languages" />
     </div>
     <hr>
