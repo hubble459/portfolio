@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="overflow-x-hidden">
         <h1>{{ t('nav.projects') }}</h1>
         <hr>
         <div class="flex flex-row flex-nowrap overflow-x-auto gap-4 mx-4 justify-center">
@@ -8,19 +8,31 @@
             </div>
         </div>
         <div class="projects">
-            <div v-for="repo in repos" :key="repo.id" :class="repo.language?.toLowerCase() || 'unknown'">
-                <fa6-brands:github-alt />
+            <div v-for="repo in repos" :id="repo.id.toString()" :key="repo.id" :class="{ [repo.language?.toLowerCase() || 'unknown']: true, active: repo === selected && repo.readme }" @click="select(repo)">
                 <div class="grid gap-0 h-min">
                     <h2>{{ repo.name }}</h2>
                     <sub>{{ d(repo.created_at, 'date') }}</sub>
                 </div>
                 <small>{{ repo.description || 'No description' }}</small>
+                <div class="flex flex-row justify-center self-center place-self-center gap-2 actions">
+                    <div title="SSH Clone" @click.stop="">
+                        <mdi:ssh />
+                    </div>
+                    <a :href="repo.html_url" title="GitHub" target="_blank" rel="noopener noreferrer" @click.stop>
+                        <fa6-brands:github-alt />
+                    </a>
+                </div>
+                <template v-if="repo === selected">
+                    <Markdown v-if="repo.readme" class="readme" :source="repo.readme" :html="true" :linkify="true" :typography="true" />
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+    import Markdown from 'vue3-markdown-it';
+
     const { t, d } = useI18n();
 
     const knownLanguages = ['rust', 'typescript', 'javascript', 'java'];
@@ -43,9 +55,12 @@
         default_branch: string
         created_at: string
         updated_at: string
+        readme?: string
     }
 
     const repos = ref<Repo[]>([]);
+    const selected = ref<Repo>();
+
     const repoURLs = [
         'https://api.github.com/users/hubble459/repos',
         'https://api.github.com/users/quentin-correia/repos',
@@ -57,6 +72,23 @@
         return languages;
     }, [] as string[]));
 
+    async function select(repo: Repo) {
+        if (selected.value === repo) {
+            selected.value = undefined;
+            return;
+        }
+
+        selected.value = repo;
+        location.hash = repo.id.toString();
+
+        const readme = `https://raw.githubusercontent.com/${repo.owner.login}/${repo.name}/${repo.default_branch}/README.md`;
+
+        const res = await fetch(readme);
+        if (res.ok) {
+            repo.readme = await res.text();
+        }
+    }
+
     onBeforeMount(async () => {
         const promises: Promise<Response>[] = [];
 
@@ -66,7 +98,7 @@
 
         const responses = await Promise.all(promises);
         for (const res of responses) {
-            if (res.status >= 200 && res.status < 300) {
+            if (res.ok) {
                 const json: Repo[] = await res.json();
 
                 repos.value.push(...json.map((repo) => {
@@ -76,10 +108,17 @@
                 }));
             }
         }
+
+        const selected = repos.value.find(repo => repo.id === +location.hash.substring(1));
+        if (selected) {
+            select(selected).then(() => {
+                document.getElementById((selected!.id || 0).toString())?.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+            });
+        }
     });
 </script>
 
-<style scoped lang="postcss">
+<style lang="postcss">
     .rust {
         @apply bg-[#a72145] text-white;
     }
@@ -103,21 +142,50 @@
     .projects {
         @apply flex flex-row flex-wrap gap-4 justify-center m-4;
 
-        > div {
-            @apply cursor-pointer
-                grid relative
-                rounded p-2 <md:flex-1 md:flex-grow
-                text-shadow-sm
-                shadow-gray-500 dark:shadow-red-900 shadow-md
-                md:min-h-30
-                transition-transform;
+        .actions {
 
             svg {
-                @apply h-4 absolute top-1 left-1 text-black;
+                @apply text-current;
             }
 
-            &:not(.unknown) svg {
-                @apply text-white;
+            a {
+                color: currentColor;
+            }
+        }
+
+        > div {
+            @apply no-underline
+                cursor-pointer
+                grid relative
+                rounded p-2 <md:flex-1 md:flex-grow
+                transition-transform
+                md:min-h-30;
+
+            &.active {
+                flex-basis: 100%;
+
+                > .readme {
+                    @apply border-white relative border-black border w-[calc(100%-2rem)] block relative text-left overflow-auto bg-black rounded
+                        px-4 m-0 text-white;
+
+                    > em {
+                        @apply absolute left-1 top-1;
+                    }
+
+                    code {
+                        @apply scrollbar scrollbar-thumb-primary-500;
+                        overflow: auto;
+                    }
+                }
+            }
+
+            &:not(.active) {
+                @apply text-shadow-sm
+                    shadow-gray-500 dark:shadow-red-900 shadow-md;
+
+                &:hover {
+                    @apply transform scale-105 shadow-gray-500 dark:shadow-red-800 shadow-lg dark:shadow-md;
+                }
             }
 
             h2 {
@@ -126,10 +194,6 @@
 
             small {
                 @apply items-center line-clamp-4;
-            }
-
-            &:hover {
-                @apply transform scale-105 shadow-gray-500 dark:shadow-red-800 shadow-lg dark:shadow-md;
             }
         }
     }

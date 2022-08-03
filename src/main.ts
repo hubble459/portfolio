@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import generatedRoutes from 'virtual:generated-pages';
 import { setupLayouts } from 'virtual:generated-layouts';
 import App from './App.vue';
+import 'highlight.js/styles/monokai.css';
 
 // windicss layers
 import 'virtual:windi-base.css';
