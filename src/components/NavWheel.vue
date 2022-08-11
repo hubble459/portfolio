@@ -1,18 +1,31 @@
 <template>
     <div class="absolute right-0 top-0 bottom-0 left-0 overflow-hidden pointer-events-none ">
-        <nav ref="nav" class="nav-wheel" @mouseenter="enter(false)" @mouseleave="leave" @click.stop="enter(true)">
+        <nav
+            ref="nav"
+            class="nav-wheel"
+            @mouseenter="enter(false)"
+            @mouseleave="leave"
+            @click.stop="enter(true)">
             <fontisto-nav-icon-a />
             <div>
-                <RouterLink to="/" :title="t('nav.home')">
+                <RouterLink
+                    to="/"
+                    :title="t('nav.home')">
                     <ci:home-outline />
                 </RouterLink>
-                <RouterLink to="/projects" :title="t('nav.projects')">
+                <RouterLink
+                    to="/projects"
+                    :title="t('nav.projects')">
                     <ci:window-code-block />
                 </RouterLink>
-                <RouterLink to="/about" :title="t('nav.about')">
+                <RouterLink
+                    to="/about"
+                    :title="t('nav.about')">
                     <ci:id-card />
                 </RouterLink>
-                <RouterLink to="/settings" :title="t('nav.settings')">
+                <RouterLink
+                    to="/settings"
+                    :title="t('nav.settings')">
                     <ci:slider-03 />
                 </RouterLink>
             </div>

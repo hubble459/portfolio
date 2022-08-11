@@ -5,7 +5,9 @@
         <article>
             owo
 
-            <img src="" alt="">
+            <img
+                src=""
+                alt="">
         </article>
 
         <div>

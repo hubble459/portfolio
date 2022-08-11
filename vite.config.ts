@@ -133,15 +133,22 @@ export default defineConfig({
         host: '0.0.0.0',
     },
 
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vue3-markdown-it': ['vue3-markdown-it'],
+                },
+            },
+        },
+    },
+
     optimizeDeps: {
         include: [
             'vue',
             'vue-router',
             '@vueuse/core',
             '@vueuse/head',
-        ],
-        exclude: [
-            'vue-demi',
         ],
     },
 

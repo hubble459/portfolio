@@ -3,23 +3,37 @@
     <hr>
     <h2>{{ t('settings.colour-mode') }}</h2>
     <div class="buttons">
-        <button type="button" :class="{ active: !isDark }" @click="isDark = false">
+        <button
+            type="button"
+            :class="{ active: !isDark }"
+            @click="isDark = false">
             {{ t('settings.colour-mode-light') }}
         </button>
-        <button type="button" :class="{ active: isDark }" @click="isDark = true">
+        <button
+            type="button"
+            :class="{ active: isDark }"
+            @click="isDark = true">
             {{ t('settings.colour-mode-dark') }}
         </button>
     </div>
     <hr>
     <h2>{{ t('settings.language') }}</h2>
     <div class="buttons">
-        <button v-for="aLocale in availableLocales" :key="aLocale" type="button" :class="{ active: aLocale === locale }" @click="changeLocale(aLocale)">
+        <button
+            v-for="aLocale in availableLocales"
+            :key="aLocale"
+            type="button"
+            :class="{ active: aLocale === locale }"
+            @click="changeLocale(aLocale)">
             {{ aLocale }}
         </button>
     </div>
     <hr>
     <h2>{{ t('settings.version') }}</h2>
-    <small>{{ VERSION }} (<a href="https://gitlab.com/meep334/portfolio/" target="_blank" rel="noopener noreferrer">gitlab</a>)</small>
+    <small>{{ VERSION }} (<a
+        href="https://gitlab.com/meep334/portfolio/"
+        target="_blank"
+        rel="noopener noreferrer">gitlab</a>)</small>
     <br>
     <small>{{ t('settings.updated', { datetime: d(BUILD_TIMESTAMP, 'longTime') }) }}</small>
 </template>

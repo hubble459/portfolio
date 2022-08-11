@@ -1,22 +1,32 @@
 <template>
     <h1>Quentin Correia</h1>
     <h2>
-        <a href="https://www.saxion.nl/opleidingen/voltijd/bachelor/hbo-ict" target="_blank" rel="noopener noreferrer">HBO-ICT</a>
+        <a
+            href="https://www.saxion.nl/opleidingen/voltijd/bachelor/hbo-ict"
+            target="_blank"
+            rel="noopener noreferrer">HBO-ICT</a>
         {{ t('home.intro.student') }}
-        <a target="_blank" href="https://saxion.nl" rel="noopener noreferrer">Saxion</a>
+        <a
+            target="_blank"
+            href="https://saxion.nl"
+            rel="noopener noreferrer">Saxion</a>
         {{ t('home.intro.in-enschede') }}
     </h2>
     <hr>
     <div class="flex flex-col">
         <h2>{{ t('home.languages') }}</h2>
         <!-- <sub>{{ t('home.self-made') }}</sub> -->
-        <CanvasBalls class="mx-auto" :items="languages" />
+        <CanvasBalls
+            class="mx-auto"
+            :items="languages" />
     </div>
     <hr>
     <div class="flex flex-col">
         <h2>{{ t('home.frameworks') }}</h2>
         <br>
-        <SkillDiagram class="mx-auto" :skills="frameworks" />
+        <SkillDiagram
+            class="mx-auto"
+            :skills="frameworks" />
     </div>
     <br>
     <br>

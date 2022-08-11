@@ -1,5 +1,10 @@
 <template>
-    <svg ref="diagram" class="diagram" xmlns="http://www.w3.org/2000/svg" width="90vw" height="350">
+    <svg
+        ref="diagram"
+        class="diagram"
+        xmlns="http://www.w3.org/2000/svg"
+        width="90vw"
+        height="350">
         <!-- owo -->
     </svg>
 </template>
