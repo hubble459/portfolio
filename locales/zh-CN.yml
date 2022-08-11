@@ -2,6 +2,8 @@ about:
   socials: 社交
 global:
   back: 后退
+  clipboard-unsupported: 不支持剪贴板
+  copied-successfully: 复制成功！
 home:
   frameworks: 构架
   intro:

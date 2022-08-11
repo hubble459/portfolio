@@ -1,13 +1,35 @@
 <template>
     <div class="relative my-8">
-        <canvas ref="canvas" :width="center * 2" :height="center * 2" background="red" class="!bg-transparent rounded cursor-move" @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onMouseDrag" />
-        <form class="absolute top-0 left-0 grid grid-cols-2 w-max place-items-start gap-1 text-left" @submit.prevent>
+        <canvas
+            ref="canvas"
+            :width="center * 2"
+            :height="center * 2"
+            background="red"
+            class="!bg-transparent rounded cursor-move"
+            @mousedown="startDrag"
+            @mouseup="stopDrag"
+            @mousemove="onMouseDrag" />
+        <form
+            class="absolute top-0 left-0 grid grid-cols-2 w-max place-items-start gap-1 text-left"
+            @submit.prevent>
             <label>Min Speed:</label>
-            <input v-model="minSpeed" max="500" class="w-15" step="1" type="number">
+            <input
+                v-model="minSpeed"
+                max="500"
+                class="w-15"
+                step="1"
+                type="number">
             <label>Speed Decrease:</label>
-            <input v-model="speedDecrease" max="1" class="w-15" step="0.001" type="number">
+            <input
+                v-model="speedDecrease"
+                max="1"
+                class="w-15"
+                step="0.001"
+                type="number">
             <label>Collision:</label>
-            <input v-model="collision" type="checkbox">
+            <input
+                v-model="collision"
+                type="checkbox">
         </form>
     </div>
 </template>

@@ -13,7 +13,7 @@ import Inspect from 'vite-plugin-inspect';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left';
-const VERSION = '1.1.1';
+const VERSION = '1.2.0';
 
 export default defineConfig({
     define: {
@@ -133,15 +133,22 @@ export default defineConfig({
         host: '0.0.0.0',
     },
 
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    'vue3-markdown-it': ['vue3-markdown-it'],
+                },
+            },
+        },
+    },
+
     optimizeDeps: {
         include: [
             'vue',
             'vue-router',
             '@vueuse/core',
             '@vueuse/head',
-        ],
-        exclude: [
-            'vue-demi',
         ],
     },
 

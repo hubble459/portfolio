@@ -24,7 +24,19 @@
       "ArrayPattern": { "minItems": 3 }
     }],
     "array-bracket-newline": ["error", "consistent"],
-    "object-curly-newline": ["error", { "consistent": true }]
+    "object-curly-newline": ["error", { "consistent": true }],
+    "vue/max-attributes-per-line": ["error", {
+      "singleline": {
+        "max": 1
+      },
+      "multiline": {
+        "max": 1
+      }
+    }],
+    "vue/html-closing-bracket-newline": ["error", {
+      "singleline": "never",
+      "multiline": "never"
+    }]
   },
   "overrides": [
     {

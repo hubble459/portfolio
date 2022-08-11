@@ -2,6 +2,8 @@ about:
   socials: Contact
 global:
   back: Rug
+  clipboard-unsupported: Klembord wordt niet ondersteund
+  copied-successfully: Succesvol gekopieerd!
 home:
   frameworks: Frameworks
   intro:

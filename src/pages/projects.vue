@@ -1,29 +1,77 @@
 <template>
     <div class="overflow-x-hidden">
+        <Transition>
+            <div
+                v-if="notificationVisible"
+                class="fixed top-0 z-10 right-0 pt-1 px-2 mt-2 mx-4 flex flex-col justify-between bg-pink-400 rounded overflow-hidden">
+                <h2 class="m-0 p-0">
+                    {{ notificationText }}
+                </h2>
+                <div
+                    class="m-0 p-0 h-1 w-[140%] bg-secondary-50 dark:bg-white -mx-2 relative"
+                    value="10"
+                    max="100">
+                    <div
+                        ref="notificationProgress"
+                        class="absolute bg-primary-600 h-1 w-full" />
+                </div>
+            </div>
+        </Transition>
+
         <h1>{{ t('nav.projects') }}</h1>
         <hr>
-        <div class="flex flex-row flex-nowrap overflow-x-auto gap-4 mx-4 justify-center">
-            <div v-for="language in languages" :key="language" :class="language?.toLowerCase()" class="px-2 py-1 rounded">
-                {{ language }}
+        <div
+            class="flex flex-row flex-nowrap sm:justify-center gap-4 mx-4
+                    overflow-x-auto
+                    scrollbar-thin scrollbar-thinner scrollbar-thumb-primary-50 lang-types">
+            <div
+                v-for="language in languages"
+                :key="language.key"
+                :class="{
+                    [language.key.toLowerCase()]: true,
+                    selected: language.selected,
+                }"
+                class="px-2 py-1 rounded cursor-pointer"
+                @click="selectLanguage(language)"
+                @contextmenu.prevent="selectOnlyLanguage(language)">
+                {{ language.name }}
             </div>
         </div>
         <div class="projects">
-            <div v-for="repo in repos" :id="repo.id.toString()" :key="repo.id" :class="{ [repo.language?.toLowerCase() || 'unknown']: true, active: repo === selected && repo.readme }" @click="select(repo)">
+            <div
+                v-for="repo in filteredRepos"
+                :id="repo.id.toString()"
+                :key="repo.id"
+                :class="{ [repo.language?.toLowerCase() || 'unknown']: true, active: repo === selected && repo.readme }"
+                @click="select(repo)">
                 <div class="grid gap-0 h-min">
                     <h2>{{ repo.name }}</h2>
                     <sub>{{ d(repo.created_at, 'date') }}</sub>
                 </div>
                 <small>{{ repo.description || 'No description' }}</small>
                 <div class="flex flex-row justify-center self-center place-self-center gap-2 actions">
-                    <div title="SSH Clone" @click.stop="">
+                    <div
+                        title="SSH Clone"
+                        @click.stop="copy(repo.ssh_url)">
                         <mdi:ssh />
                     </div>
-                    <a :href="repo.html_url" title="GitHub" target="_blank" rel="noopener noreferrer" @click.stop>
+                    <a
+                        :href="repo.html_url"
+                        title="GitHub"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        @click.stop>
                         <fa6-brands:github-alt />
                     </a>
                 </div>
                 <template v-if="repo === selected">
-                    <Markdown v-if="repo.readme" class="readme" :source="repo.readme" :html="true" :linkify="true" :typography="true" />
+                    <Markdown
+                        v-if="repo.readme"
+                        class="readme"
+                        :source="repo.readme"
+                        :html="true"
+                        :linkify="true"
+                        :typography="true" />
                 </template>
             </div>
         </div>
@@ -31,11 +79,22 @@
 </template>
 
 <script setup lang="ts">
-    import Markdown from 'vue3-markdown-it';
+    const Markdown = import('vue3-markdown-it');
+
+    const notificationProgress = ref<HTMLDivElement>(null as any);
+    const notificationVisible = ref(false);
+    const notificationText = ref('Successfully copied!');
+    let notificationHandle: undefined | NodeJS.Timeout;
 
     const { t, d } = useI18n();
 
-    const knownLanguages = [
+    interface Language {
+        name: string
+        key: string
+        selected: boolean
+    }
+
+    const knownLanguages: Language[] = [
         'rust',
         'typescript',
         'javascript',
@@ -43,7 +102,7 @@
         'dart',
         'c++',
         'html',
-    ];
+    ].map(key => ({ name: '', key, selected: true }));
 
     interface Repo {
         git: 'github' | 'gitlab'
@@ -66,19 +125,15 @@
         readme?: string
     }
 
+    const languages = ref<Language[]>([]);
     const repos = ref<Repo[]>([]);
     const selected = ref<Repo>();
+    const filteredRepos = computed(() => repos.value.filter(repo => !!languages.value.find(lang => lang.selected && lang.name === repo.language)));
 
     const repoURLs = [
         'https://api.github.com/users/hubble459/repos',
         'https://api.github.com/users/quentin-correia/repos',
     ];
-    const languages = computed(() => repos.value.reduce((languages, repo) => {
-        if (!languages.includes(repo.language)) {
-            languages.push(repo.language);
-        }
-        return languages;
-    }, [] as string[]));
 
     async function select(repo: Repo) {
         if (selected.value === repo) {
@@ -97,6 +152,15 @@
         }
     }
 
+    function selectOnlyLanguage(language: Language) {
+        languages.value.forEach(lang => lang.selected = false);
+        language.selected = true;
+    }
+
+    function selectLanguage(language: Language) {
+        language.selected = !language.selected;
+    }
+
     onBeforeMount(async () => {
         const promises: Promise<Response>[] = [];
 
@@ -111,11 +175,22 @@
 
                 repos.value.push(...json.map((repo) => {
                     repo.git = 'github';
-                    repo.language = knownLanguages.includes(repo.language?.toLowerCase()) ? repo.language : 'Unknown';
+                    const lang = knownLanguages.find(({ key }) => key === repo.language?.toLowerCase());
+                    if (lang) {
+                        lang.name = repo.language;
+                    }
+                    repo.language = lang ? repo.language : 'Unknown';
                     return repo;
                 }));
             }
         }
+
+        languages.value = repos.value.reduce((languages, repo) => {
+            if (!languages.find(l => l.name === repo.language)) {
+                languages.push({ key: repo.language.toLowerCase(), name: repo.language, selected: true });
+            }
+            return languages;
+        }, [] as Language[]);
 
         const selected = repos.value.find(repo => repo.id === +location.hash.substring(1));
         if (selected) {
@@ -124,7 +199,38 @@
             });
         }
     });
+
+    async function copy(text: string) {
+        const cb = useClipboard();
+        try {
+            if (cb.isSupported.value) {
+                await cb.copy(text);
+                throw new Error(t('global.copied-successfully'));
+            } else {
+                throw new Error(t('global.clipboard-unsupported'));
+            }
+        } catch (e) {
+            clearTimeout(notificationHandle);
+
+            // Notification
+            notificationVisible.value = true;
+            notificationText.value = e.message;
+            await nextTick();
+
+            notificationHandle = setTimeout(() => {
+                notificationProgress.value.style.animation = 'none';
+                notificationVisible.value = false;
+            }, 1000);
+            notificationProgress.value.style.animation = 'loading 1000ms linear';
+        }
+    }
 </script>
+
+<style scoped lang="postcss">
+    .lang-types :not(.selected) {
+        @apply opacity-25;
+    }
+</style>
 
 <style lang="postcss">
     .rust {
@@ -216,5 +322,30 @@
                 @apply items-center line-clamp-4;
             }
         }
+    }
+
+    @keyframes loading {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 100%;
+        }
+    }
+
+    /* we will explain what these classes do next! */
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 0.5s ease;
+    }
+
+    .v-leave-to {
+        opacity: 0;
+    }
+
+    .scrollbar-thinner::-webkit-scrollbar {
+        width: 8px;
+        height: 4px;
     }
 </style>
