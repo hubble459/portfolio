@@ -2,6 +2,8 @@ about:
   socials: ソーシャル
 global:
   back: 戻る
+  clipboard-unsupported: クリップボードはサポートされていません
+  copied-successfully: 正常にコピーされました。
 home:
   frameworks: フレームワーク
   intro:

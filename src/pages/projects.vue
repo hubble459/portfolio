@@ -1,5 +1,16 @@
 <template>
     <div class="overflow-x-hidden">
+        <Transition>
+            <div v-if="notificationVisible" class="fixed top-0 z-10 right-0 pt-1 px-2 mt-2 mx-4 flex flex-col justify-between bg-pink-400 rounded overflow-hidden">
+                <h2 class="m-0 p-0">
+                    {{ notificationText }}
+                </h2>
+                <div class="m-0 p-0 h-1 w-[140%] bg-secondary-50 dark:bg-white -mx-2 relative" value="10" max="100">
+                    <div ref="notificationProgress" class="absolute bg-primary-600 h-1 w-full" />
+                </div>
+            </div>
+        </Transition>
+
         <h1>{{ t('nav.projects') }}</h1>
         <hr>
         <div class="flex flex-row flex-nowrap overflow-x-auto gap-4 mx-4 justify-center">
@@ -15,7 +26,7 @@
                 </div>
                 <small>{{ repo.description || 'No description' }}</small>
                 <div class="flex flex-row justify-center self-center place-self-center gap-2 actions">
-                    <div title="SSH Clone" @click.stop="">
+                    <div title="SSH Clone" @click.stop="copy(repo.ssh_url)">
                         <mdi:ssh />
                     </div>
                     <a :href="repo.html_url" title="GitHub" target="_blank" rel="noopener noreferrer" @click.stop>
@@ -32,6 +43,11 @@
 
 <script setup lang="ts">
     import Markdown from 'vue3-markdown-it';
+
+    const notificationProgress = ref<HTMLDivElement>(null as any);
+    const notificationVisible = ref(false);
+    const notificationText = ref('Successfully copied!');
+    let notificationHandle: undefined | NodeJS.Timeout;
 
     const { t, d } = useI18n();
 
@@ -124,6 +140,31 @@
             });
         }
     });
+
+    async function copy(text: string) {
+        const cb = useClipboard();
+        try {
+            if (cb.isSupported.value) {
+                await cb.copy(text);
+                throw new Error(t('global.copied-successfully'));
+            } else {
+                throw new Error(t('global.clipboard-unsupported'));
+            }
+        } catch (e) {
+            clearTimeout(notificationHandle);
+
+            // Notification
+            notificationVisible.value = true;
+            notificationText.value = e.message;
+            await nextTick();
+
+            notificationHandle = setTimeout(() => {
+                notificationProgress.value.style.animation = 'none';
+                notificationVisible.value = false;
+            }, 1000);
+            notificationProgress.value.style.animation = 'loading 1000ms linear';
+        }
+    }
 </script>
 
 <style lang="postcss">
@@ -216,5 +257,25 @@
                 @apply items-center line-clamp-4;
             }
         }
+    }
+
+    @keyframes loading {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 100%;
+        }
+    }
+
+    /* we will explain what these classes do next! */
+    .v-enter-active,
+    .v-leave-active {
+        transition: opacity 0.5s ease;
+    }
+
+    .v-leave-to {
+        opacity: 0;
     }
 </style>
