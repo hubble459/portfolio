@@ -79,7 +79,7 @@
 </template>
 
 <script setup lang="ts">
-    const Markdown = import('vue3-markdown-it');
+    import Markdown from 'vue3-markdown-it';
 
     const notificationProgress = ref<HTMLDivElement>(null as any);
     const notificationVisible = ref(false);
