@@ -9,7 +9,7 @@
         </article>
 
         <div>
-            <h2>Socials</h2>
+            <h2>{{ t('about.socials') }}</h2>
             <div class="flex flex-row flex-wrap md:w-[50vw] mx-auto justify-center gap-6">
                 <a href=".">GitHub (hubble459)</a>
                 <a href=".">GitHub (quentin-correia)</a>

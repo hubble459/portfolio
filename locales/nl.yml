@@ -1,0 +1,25 @@
+about:
+  socials: Contact
+global:
+  back: Rug
+home:
+  frameworks: Frameworks
+  intro:
+    in-enschede: in Enschede
+    student: student aan
+  languages: Programmeertalen
+  self-made: ik heb dit gemaakt
+  self-made-as-well: heb dit ook gemaakt
+nav:
+  about: Over
+  home: Huis
+  projects: Projecten
+  settings: Instellingen
+not-found: Niet gevonden
+settings:
+  colour-mode: Kleurmodus
+  colour-mode-dark: Donker
+  colour-mode-light: Licht
+  language: Taal
+  updated: Bijgewerkt op {datetime}
+  version: Versie

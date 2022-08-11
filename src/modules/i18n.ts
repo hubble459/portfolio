@@ -39,7 +39,7 @@ export const install: UserModule = ({ app }) => {
 
     const i18n = createI18n({
         legacy: false,
-        locale: localStorage.getItem('i18n-locale') || 'en',
+        locale: localStorage.getItem('i18n-locale') || 'nl',
         messages,
         datetimeFormats: Object.fromEntries(Object.keys(messages).map(key => ([key, datetimeFormat]))),
     });
