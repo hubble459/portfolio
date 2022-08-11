@@ -13,7 +13,7 @@ import Inspect from 'vite-plugin-inspect';
 import { VitePWA } from 'vite-plugin-pwa';
 
 const markdownWrapperClasses = 'prose prose-sm m-auto text-left';
-const VERSION = '1.0.5';
+const VERSION = '1.1.1';
 
 export default defineConfig({
     define: {

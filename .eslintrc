@@ -18,7 +18,13 @@
     "vue/component-name-in-template-casing": ["error", "PascalCase", {
       "registeredComponentsOnly": true,
       "ignores": []
-    }]
+    }],
+    "array-element-newline": ["error", {
+      "ArrayExpression": "consistent",
+      "ArrayPattern": { "minItems": 3 }
+    }],
+    "array-bracket-newline": ["error", "consistent"],
+    "object-curly-newline": ["error", { "consistent": true }]
   },
   "overrides": [
     {
