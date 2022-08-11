@@ -13,7 +13,7 @@
 
         <h1>{{ t('nav.projects') }}</h1>
         <hr>
-        <div class="flex flex-row flex-nowrap overflow-x-auto gap-4 mx-4 justify-center">
+        <div class="flex flex-row flex-nowrap overflow-x-auto gap-4 mx-4 md:justify-center scrollbar-thin scrollbar-thinner scrollbar-thumb-primary-50">
             <div v-for="language in languages" :key="language" :class="language?.toLowerCase()" class="px-2 py-1 rounded">
                 {{ language }}
             </div>
@@ -277,5 +277,10 @@
 
     .v-leave-to {
         opacity: 0;
+    }
+
+    .scrollbar-thinner::-webkit-scrollbar {
+        width: 8px;
+        height: 4px;
     }
 </style>
