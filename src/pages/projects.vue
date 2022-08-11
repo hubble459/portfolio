@@ -35,7 +35,15 @@
 
     const { t, d } = useI18n();
 
-    const knownLanguages = ['rust', 'typescript', 'javascript', 'java'];
+    const knownLanguages = [
+        'rust',
+        'typescript',
+        'javascript',
+        'java',
+        'dart',
+        'c++',
+        'html',
+    ];
 
     interface Repo {
         git: 'github' | 'gitlab'
@@ -125,6 +133,18 @@
 
     .java {
         @apply bg-[#f89820] text-black;
+    }
+
+    .dart {
+        @apply bg-[#40c4ff] text-black;
+    }
+
+    .html {
+        @apply bg-[#e34c26] text-black;
+    }
+
+    .c\+\+ {
+        @apply bg-[#044F88] text-white;
     }
 
     .javascript {
